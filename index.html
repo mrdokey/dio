@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bursa Properti Bali | Katalog Listing</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --light: #f8f9fa;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 0; background-color: var(--light); color: var(--primary);
+        }
+        header {
+            background: white; padding: 20px; text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1200px; margin: 30px auto; padding: 0 20px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;
+        }
+        .card {
+            background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-content { padding: 20px; }
+        .category-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 11px; font-weight: bold; text-transform: uppercase;
+            margin-bottom: 10px; background: #e1f5fe; color: #0288d1;
+        }
+        /* Warna khusus per kategori */
+        .badge-rumah-baru { background: #e3f2fd; color: #1976d2; }
+        .badge-tanah-jual { background: #e8f5e9; color: #388e3c; }
+        
+        h3 { margin: 0 0 10px 0; font-size: 1.3em; }
+        .price { color: var(--accent); font-weight: bold; font-size: 1.4em; margin: 10px 0; }
+        .loading { text-align: center; padding: 50px; font-size: 1.2em; color: #888; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bursa Properti Bali</h1>
+        <p>Temukan Hunian dan Investasi Terbaik di Pulau Dewata</p>
+    </header>
+
+    <div id="loading" class="loading">Memuat katalog properti...</div>
+    <div class="container" id="property-container"></div>
+
+    <script>
+        const TOKEN = 'Patc9yuEmuskUPVn1.cbf16b29e543bd5b7e68c386843c68c99f0e369c0b51e5cf0ea2e4d7114ff938';
+        const BASE_ID = 'appdyjcsoUhdZQbt6';
+        const TABLE_NAME = 'Bursa Properti Bali';
+
+        async function loadData() {
+            const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}`;
+            
+            try {
+                const response = await fetch(url, {
+                    headers: { Authorization: `Bearer ${TOKEN}` }
+                });
+                const data = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                const container = document.getElementById('property-container');
+
+                if(data.records.length === 0) {
+                    container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Belum ada properti terdaftar.</p>';
+                    return;
+                }
+
+                data.records.forEach(record => {
+                    const f = record.fields;
+                    
+                    // Logika gambar (mengambil foto pertama dari attachment)
+                    const img = f['Foto Utama'] ? f['Foto Utama'][0].url : 'https://via.placeholder.com/400x300?text=No+Image';
+                    
+                    // Format Rupiah
+                    const hargaIdr = new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0
+                    }).format(f['Harga'] || 0);
+
+                    const cardHtml = `
+                        <div class="card">
+                            <img src="${img}" alt="${f['Nama Properti']}">
+                            <div class="card-content">
+                                <span class="category-badge">${f['Kategori'] || 'Umum'}</span>
+                                <h3>${f['Nama Properti'] || 'Judul Tidak Ada'}</h3>
+                                <div class="price">${hargaIdr}</div>
+                                <p style="color: #666; font-size: 0.9em;">${f['Lokasi'] || 'Bali'}</p>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += cardHtml;
+                });
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loading').innerText = 'Koneksi gagal. Pastikan Token & Base ID benar.';
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

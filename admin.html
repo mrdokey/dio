@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Bursa Properti Bali</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .login-box { max-width: 300px; margin: 100px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .admin-content { display: none; max-width: 800px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        .btn-del { background: #ff4757; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        .btn-add { background: #2ed573; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-area" class="login-box">
+        <h3>Login Admin</h3>
+        <input type="text" id="user" placeholder="Username" style="width:90%; margin-bottom:10px;"><br>
+        <input type="password" id="pass" placeholder="Password" style="width:90%; margin-bottom:10px;"><br>
+        <button onclick="cekLogin()" style="width:100%;">Login</button>
+    </div>
+
+    <div id="admin-area" class="admin-content">
+        <h1>Dashboard Admin</h1>
+        <a href="inputdata.html" class="btn-add">+ Tambah Listing Baru</a>
+        <table id="table-properti">
+            <thead>
+                <tr>
+                    <th>Nama Properti</th>
+                    <th>Kategori</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="list-data"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const TOKEN = 'Patc9yuEmuskUPVn1.cbf16b29e543bd5b7e68c386843c68c99f0e369c0b51e5cf0ea2e4d7114ff938';
+        const BASE_ID = 'appdyjcsoUhdZQbt6';
+        const TABLE_NAME = 'Bursa Properti Bali';
+
+        function cekLogin() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            if(u === 'mrd' && p === 'Sukses1234#') {
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('admin-area').style.display = 'block';
+                muatDataAdmin();
+            } else {
+                alert('User atau Password Salah!');
+            }
+        }
+
+        async function muatDataAdmin() {
+            const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}`;
+            const response = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
+            const data = await response.json();
+            const tbody = document.getElementById('list-data');
+            tbody.innerHTML = '';
+
+            data.records.forEach(r => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${r.fields['Nama Properti']}</td>
+                        <td>${r.fields['Kategori']}</td>
+                        <td><button class="btn-del" onclick="hapusData('${r.id}')">Hapus</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function hapusData(id) {
+            if(confirm('Yakin ingin menghapus properti ini?')) {
+                const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}/${id}`;
+                await fetch(url, {
+                    method: 'DELETE',
+                    headers: { Authorization: `Bearer ${TOKEN}` }
+                });
+                alert('Data Terhapus!');
+                muatDataAdmin(); // Refresh tabel
+            }
+        }
+    </script>
+</body>
+</html>

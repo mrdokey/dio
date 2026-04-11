@@ -2,85 +2,58 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel - Bursa Properti Bali</title>
+    <title>Admin - Bursa Properti Bali</title>
     <style>
         body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
-        .login-box { max-width: 300px; margin: 100px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .admin-content { display: none; max-width: 800px; margin: auto; }
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
-        .btn-del { background: #ff4757; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        .btn-add { background: #2ed573; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; display: inline-block; margin-bottom: 20px; }
+        .login-box { max-width: 300px; margin: 100px auto; background: white; padding: 20px; border-radius: 10px; text-align: center; }
+        #panel { display: none; max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+        .btn-add { background: #27ae60; color: white; text-decoration: none; padding: 10px; border-radius: 5px; display: inline-block; margin-bottom: 20px; }
     </style>
 </head>
 <body>
-
-    <div id="login-area" class="login-box">
+    <div id="login-form" class="login-box">
         <h3>Login Admin</h3>
-        <input type="text" id="user" placeholder="Username" style="width:90%; margin-bottom:10px;"><br>
-        <input type="password" id="pass" placeholder="Password" style="width:90%; margin-bottom:10px;"><br>
-        <button onclick="cekLogin()" style="width:100%;">Login</button>
+        <input type="text" id="user" placeholder="User" style="width:90%;margin-bottom:10px;"><br>
+        <input type="password" id="pass" placeholder="Pass" style="width:90%;margin-bottom:10px;"><br>
+        <button onclick="login()" style="width:95%;">Masuk</button>
     </div>
-
-    <div id="admin-area" class="admin-content">
-        <h1>Dashboard Admin</h1>
-        <a href="inputdata.html" class="btn-add">+ Tambah Listing Baru</a>
-        <table id="table-properti">
-            <thead>
-                <tr>
-                    <th>Nama Properti</th>
-                    <th>Kategori</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="list-data"></tbody>
-        </table>
+    <div id="panel">
+        <a href="inputdata.html" class="btn-add">+ Tambah Properti</a>
+        <button onclick="sessionStorage.clear();location.reload();">Logout</button>
+        <table id="table"><thead><tr><th>Nama</th><th>Harga</th><th>Aksi</th></tr></thead><tbody id="res"></tbody></table>
     </div>
-
     <script>
-        const TOKEN = 'Patc9yuEmuskUPVn1.cbf16b29e543bd5b7e68c386843c68c99f0e369c0b51e5cf0ea2e4d7114ff938';
+        const TOKEN = 'PatCUXnMxIjwXWFPN.93d8a295c5ff8fcd2f79bc558699dc9c2b3d203ecb981320a19ab52d60012806';
         const BASE_ID = 'appdyjcsoUhdZQbt6';
-        const TABLE_NAME = 'Bursa Properti Bali';
-
-        function cekLogin() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-            if(u === 'mrd' && p === 'Sukses1234#') {
-                document.getElementById('login-area').style.display = 'none';
-                document.getElementById('admin-area').style.display = 'block';
-                muatDataAdmin();
-            } else {
-                alert('User atau Password Salah!');
-            }
+        if(sessionStorage.getItem('log')==='1') show();
+        function login(){
+            if(document.getElementById('user').value==='mrd' && document.getElementById('pass').value==='Sukses1234#'){
+                sessionStorage.setItem('log','1'); show();
+            } else { alert('Salah!'); }
         }
-
-        async function muatDataAdmin() {
-            const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}`;
-            const response = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
-            const data = await response.json();
-            const tbody = document.getElementById('list-data');
-            tbody.innerHTML = '';
-
+        function show(){
+            document.getElementById('login-form').style.display='none';
+            document.getElementById('panel').style.display='block';
+            fetchData();
+        }
+        async function fetchData(){
+            const res = await fetch(`https://api.airtable.com/v0/${BASE_ID}/Bursa%20Properti%20Bali`, {
+                headers: { Authorization: `Bearer ${TOKEN}` }
+            });
+            const data = await res.json();
+            const body = document.getElementById('res'); body.innerHTML = '';
             data.records.forEach(r => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${r.fields['Nama Properti']}</td>
-                        <td>${r.fields['Kategori']}</td>
-                        <td><button class="btn-del" onclick="hapusData('${r.id}')">Hapus</button></td>
-                    </tr>
-                `;
+                body.innerHTML += `<tr><td>${r.fields['Nama Properti']}</td><td>${r.fields['Harga']}</td><td><button onclick="hapus('${r.id}')">Hapus</button></td></tr>`;
             });
         }
-
-        async function hapusData(id) {
-            if(confirm('Yakin ingin menghapus properti ini?')) {
-                const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_NAME)}/${id}`;
-                await fetch(url, {
-                    method: 'DELETE',
-                    headers: { Authorization: `Bearer ${TOKEN}` }
+        async function hapus(id){
+            if(confirm('Hapus?')){
+                await fetch(`https://api.airtable.com/v0/${BASE_ID}/Bursa%20Properti%20Bali/${id}`, {
+                    method: 'DELETE', headers: { Authorization: `Bearer ${TOKEN}` }
                 });
-                alert('Data Terhapus!');
-                muatDataAdmin(); // Refresh tabel
+                fetchData();
             }
         }
     </script>

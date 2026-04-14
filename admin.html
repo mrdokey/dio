@@ -13,7 +13,6 @@
         .nav-admin { background: var(--secondary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         
-        /* Dashboard Stats */
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
         .stat-card h4 { margin: 0; font-size: 10px; color: #64748b; text-transform: uppercase; }
@@ -21,7 +20,7 @@
 
         .card-table { background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); overflow: hidden; }
         .table-header { padding: 20px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
         th { background: #f8fafc; text-align: left; padding: 15px; font-size: 11px; text-transform: uppercase; color: #64748b; }
         td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
         
@@ -79,10 +78,16 @@
                     <div style="overflow-x: auto;">
                         <table x-show="!loading" x-cloak>
                             <thead>
-                                <tr><th>Unit</th><th>Kategori</th><th>Harga</th><th>Status</th><th style="text-align: right;">Opsi</th></tr>
+                                <tr>
+                                    <th>Unit</th>
+                                    <th>Spek</th>
+                                    <th>Harga</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Opsi</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <template x-for="p in properties" :key="p.rowId">
+                                <template x-for="p in properties" :key="p.Nama_Properti">
                                     <tr>
                                         <td style="display: flex; gap: 10px; align-items: center;">
                                             <img :src="p.Foto_Utama" class="img-preview" onerror="this.src='https://placehold.co/100x100?text=No+Photo'">
@@ -91,10 +96,15 @@
                                                 <div style="font-size: 10px; color: #94a3b8;" x-text="p.Lokasi"></div>
                                             </div>
                                         </td>
-                                        <td x-text="p.Kategori"></td>
+                                        <td>
+                                            <div style="font-size: 10px;">
+                                                <span x-text="p.Kamar_Tidur || 0"></span> KT | <span x-text="p.Kamar_Mandi || 0"></span> KM<br>
+                                                LB: <span x-text="p.Luas_Bangunan || 0"></span>m² | LT: <span x-text="p.Luas_Tanah || 0"></span>m²
+                                            </div>
+                                        </td>
                                         <td style="font-weight: 800; color: var(--primary);">Rp <span x-text="formatRupiah(p.Harga)"></span></td>
                                         <td>
-                                            <span :class="'badge badge-' + p.Status.toLowerCase()" x-text="p.Status"></span>
+                                            <span :class="'badge badge-' + (p.Status ? p.Status.toLowerCase() : 'tersedia')" x-text="p.Status"></span>
                                         </td>
                                         <td style="text-align: right;">
                                             <button @click="openEditModal(p)" class="btn btn-edit">Edit</button>
@@ -115,7 +125,7 @@
             <h3 x-text="isEdit ? 'Update Properti' : 'Tambah Baru'" style="margin-top:0; color: var(--primary);"></h3>
             <form @submit.prevent="saveData">
                 <label>Nama Properti</label>
-                <input type="text" class="input-style" x-model="formData.Nama_Properti" required>
+                <input type="text" class="input-style" x-model="formData.Nama_Properti" required :readonly="isEdit">
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div>
@@ -136,30 +146,48 @@
                 <label>Lokasi</label>
                 <input type="text" class="input-style" x-model="formData.Lokasi" required>
 
-                <label>Deskripsi Singkat</label>
-                <textarea class="input-style" x-model="formData.Deskripsi" rows="2"></textarea>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label>K. Tidur</label>
+                        <input type="number" class="input-style" x-model="formData.Kamar_Tidur">
+                    </div>
+                    <div>
+                        <label>K. Mandi</label>
+                        <input type="number" class="input-style" x-model="formData.Kamar_Mandi">
+                    </div>
+                    <div>
+                        <label>L. Bangunan</label>
+                        <input type="number" class="input-style" x-model="formData.Luas_Bangunan">
+                    </div>
+                    <div>
+                        <label>L. Tanah</label>
+                        <input type="number" class="input-style" x-model="formData.Luas_Tanah">
+                    </div>
+                </div>
+
+                <label>Deskripsi Lengkap</label>
+                <textarea class="input-style" x-model="formData.Deskripsi" rows="3"></textarea>
 
                 <div style="background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed #cbd5e1;">
                     <label style="color: var(--primary); margin-bottom: 10px;">Link Foto Properti (URL)</label>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <div>
-                            <label>Link Foto Utama</label>
+                            <label>Foto Utama</label>
                             <input type="text" class="input-style" placeholder="https://..." x-model="formData.Foto_Utama">
                         </div>
                         <div>
-                            <label>Link Foto 2</label>
+                            <label>Foto 2</label>
                             <input type="text" class="input-style" placeholder="https://..." x-model="formData.Foto_2">
                         </div>
                         <div>
-                            <label>Link Foto 3</label>
+                            <label>Foto 3</label>
                             <input type="text" class="input-style" placeholder="https://..." x-model="formData.Foto_3">
                         </div>
                         <div>
-                            <label>Link Foto 4</label>
+                            <label>Foto 4</label>
                             <input type="text" class="input-style" placeholder="https://..." x-model="formData.Foto_4">
                         </div>
                     </div>
-                    <p style="font-size: 9px; color: #64748b; margin: 5px 0 0;">*Masukkan link gambar langsung (contoh: dari ImgBB 'Direct Link')</p>
                 </div>
 
                 <label>Status</label>
@@ -178,7 +206,7 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyCd3-nBkeA8gGFy1TCqY5xuz2hwcbswp2fDnK_F8ZIbiVNbdBguAz2EnyYxCvfn-MVkg/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwanLcUquMeWknDw9QGPm8c7u6JQRJ-O0B-zdjgY-Lq8rhaUeLtbJ33kz4VkxzNNDYEEQ/exec';
 
         function adminSystem() {
             return {
@@ -203,8 +231,11 @@
                         this.fetchData();
                     } else { this.errorMsg = 'Username/Password salah!'; }
                 },
+
                 doLogout() { this.isLoggedIn = false; localStorage.removeItem('admin_login'); },
+                
                 init() { if(this.isLoggedIn) this.fetchData(); },
+
                 async fetchData() {
                     this.loading = true;
                     try { 
@@ -213,36 +244,51 @@
                     } catch (e) { console.error(e); }
                     this.loading = false;
                 },
+
                 openAddModal() {
                     this.isEdit = false;
-                    this.formData = { Nama_Properti: '', Kategori: 'Rumah Baru', Harga: '', Lokasi: '', Deskripsi: '', Foto_Utama: '', Foto_2: '', Foto_3: '', Foto_4: '', Status: 'Tersedia' };
+                    this.formData = { 
+                        Nama_Properti: '', Kategori: 'Rumah Baru', Harga: '', Lokasi: '', 
+                        Deskripsi: '', Foto_Utama: '', Foto_2: '', Foto_3: '', Foto_4: '', 
+                        Status: 'Tersedia', Kamar_Tidur: '', Kamar_Mandi: '', 
+                        Luas_Bangunan: '', Luas_Tanah: '' 
+                    };
                     this.showModal = true;
                 },
-                openEditModal(item) { this.isEdit = true; this.formData = { ...item }; this.showModal = true; },
+
+                openEditModal(item) { 
+                    this.isEdit = true; 
+                    this.formData = { ...item }; 
+                    this.showModal = true; 
+                },
+
                 async saveData() {
                     this.processing = true;
+                    
                     const payload = {
-                        ...this.formData,
-                        "Nama Properti": this.formData.Nama_Properti,
-                        "Foto Utama": this.formData.Foto_Utama,
-                        "Foto 2": this.formData.Foto_2,
-                        "Foto 3": this.formData.Foto_3,
-                        "Foto 4": this.formData.Foto_4
+                        action: this.isEdit ? 'edit' : 'add',
+                        ...this.formData
                     };
+
                     try {
                         await fetch(API_URL, { 
                             method: 'POST', 
                             mode: 'no-cors', 
                             body: JSON.stringify(payload) 
                         });
+                        
+                        alert('Permintaan berhasil dikirim ke database!');
                         this.showModal = false;
                         setTimeout(() => this.fetchData(), 2000);
-                    } catch (e) { alert('Gagal!'); }
-                    this.processing = false;
+                    } catch (e) { 
+                        alert('Gagal menyimpan data!'); 
+                    } finally {
+                        this.processing = false;
+                    }
                 }
             }
         }
     </script>
 </body>
-    </html>
-    
+                                                </html>
+                            

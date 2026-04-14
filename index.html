@@ -25,38 +25,43 @@
         .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(30, 64, 175, 0.2); }
         .btn-semua { grid-column: span 2; margin-bottom: 5px; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; padding: 0 20px 40px; max-width: 1200px; margin: auto; }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+            padding: 0 20px 40px; 
+            max-width: 1400px; 
+            margin: auto; 
+        }
+
         .card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #f1f5f9; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
         
-        .card-img-wrapper { width: 100%; height: 230px; position: relative; overflow: hidden; background: #e2e8f0; cursor: pointer; }
+        .card-img-wrapper { width: 100%; height: 200px; position: relative; overflow: hidden; background: #e2e8f0; cursor: pointer; }
         .card-img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; transition: opacity 1s ease-in-out; opacity: 0; }
         .card-img.active { opacity: 1; }
 
-        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-cat { font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 5px; }
-        .card-title { font-size: 20px; font-weight: 700; margin: 0 0 5px; color: var(--secondary); }
-        .card-loc { font-size: 12px; color: #64748b; margin-bottom: 12px; }
+        .card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-cat { font-size: 9px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 5px; }
+        .card-title { font-size: 18px; font-weight: 700; margin: 0 0 5px; color: var(--secondary); }
+        .card-loc { font-size: 11px; color: #64748b; margin-bottom: 12px; }
         
-        /* STYLING SPECS (BEDS, BATHS, SIZE) */
-        .spec-row { display: flex; gap: 15px; margin-bottom: 15px; padding: 8px 0; border-bottom: 1px dashed #e2e8f0; }
-        .spec-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #475569; }
-        .spec-item i { color: #94a3b8; font-size: 14px; }
+        .spec-row { display: flex; gap: 10px; margin-bottom: 12px; padding: 6px 0; border-bottom: 1px dashed #e2e8f0; }
+        .spec-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #475569; }
+        .spec-item i { color: #94a3b8; font-size: 12px; }
 
-        .card-desc-short { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: 13px; color: #475569; line-height: 1.5; margin-bottom: 5px; }
-        .read-more-btn { background: none; border: none; color: var(--primary); font-weight: 700; font-size: 12px; cursor: pointer; padding: 0; margin-bottom: 15px; text-align: left; }
+        .card-desc-short { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 12px; color: #475569; line-height: 1.5; margin-bottom: 5px; }
+        .read-more-btn { background: none; border: none; color: var(--primary); font-weight: 700; font-size: 11px; cursor: pointer; padding: 0; margin-bottom: 15px; text-align: left; }
         
-        .price-row { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #f1f5f9; padding-top: 15px; margin-bottom: 15px; }
-        .price-label { font-size: 9px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
-        .price-val { font-size: 18px; font-weight: 800; color: var(--primary); }
-        .status-badge { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: #dcfce7; color: #166534; }
+        .price-row { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #f1f5f9; padding-top: 12px; margin-bottom: 12px; }
+        .price-label { font-size: 8px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+        .price-val { font-size: 16px; font-weight: 800; color: var(--primary); }
+        .status-badge { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 20px; background: #dcfce7; color: #166534; }
 
-        .btn-row { display: flex; gap: 8px; align-items: center; margin-top: auto; }
-        .btn-wa-main { flex: 1; background: var(--accent); color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 14px; }
+        .btn-row { display: flex; gap: 6px; align-items: center; margin-top: auto; }
+        .btn-wa-main { flex: 1; background: var(--accent); color: white; text-align: center; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 13px; }
         
-        /* KUNCI CSS SHARE BUTTONS */
-        .share-group { display: flex; gap: 6px; }
-        .share-btn { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: 0.2s; color: white; font-size: 18px; }
-        .share-btn:active { transform: scale(0.9); }
+        .share-group { display: flex; gap: 4px; }
+        .share-btn { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: 0.2s; color: white; font-size: 16px; }
         
         .bg-wa { background: #25D366; }
         .bg-fb { background: #1877F2; }
@@ -67,6 +72,9 @@
         
         footer { background: var(--secondary); color: #94a3b8; padding: 40px 20px; margin-top: 40px; text-align: center; }
         [x-cloak] { display: none !important; }
+
+        @media (min-width: 1200px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 1600px) { .grid { grid-template-columns: repeat(6, 1fr); } }
     </style>
 </head>
 <body x-data="propertyApp()">
@@ -89,9 +97,9 @@
     </div>
 
     <main>
-        <div x-show="loading" style="text-align:center; padding:50px; color:#94a3b8;">Memuat Data...</div>
+        <div x-show="loading" style="text-align:center; padding:50px; color:#94a3b8;">Memuat Data Terbaru...</div>
         <div class="grid" x-show="!loading" x-cloak>
-            <template x-for="p in filteredProperties" :key="p.rowId">
+            <template x-for="p in filteredProperties" :key="p.Nama_Properti">
                 <div class="card" x-data="{ 
                     curr: 0, 
                     imgs: [p.Foto_Utama, p.Foto_2, p.Foto_3, p.Foto_4].filter(i => i),
@@ -110,9 +118,9 @@
                         
                         <template x-if="p.Kategori === 'Rumah Baru' || p.Kategori === 'Rumah Bekas'">
                             <div class="spec-row">
-                                <div class="spec-item"><i class="fa-solid fa-bed"></i> <span x-text="p.Kamar_Tidur + ' beds'"></span></div>
-                                <div class="spec-item"><i class="fa-solid fa-bath"></i> <span x-text="p.Kamar_Mandi + ' baths'"></span></div>
-                                <div class="spec-item"><i class="fa-solid fa-ruler-combined"></i> <span x-text="p.Luas_Bangunan + ' m²'"></span></div>
+                                <div class="spec-item"><i class="fa-solid fa-bed"></i> <span x-text="(p.Kamar_Tidur || 0)"></span></div>
+                                <div class="spec-item"><i class="fa-solid fa-bath"></i> <span x-text="(p.Kamar_Mandi || 0)"></span></div>
+                                <div class="spec-item"><i class="fa-solid fa-ruler-combined"></i> <span x-text="(p.Luas_Bangunan || 0) + 'm²'"></span></div>
                             </div>
                         </template>
 
@@ -129,7 +137,6 @@
 
                         <div class="btn-row">
                             <a :href="'https://wa.me/6282229352255?text=Halo, saya tertarik dengan ' + p.Nama_Properti" class="btn-wa-main">WhatsApp</a>
-                            
                             <div class="share-group">
                                 <button @click="shareLink('wa', p)" class="share-btn bg-wa"><i class="fa-brands fa-whatsapp"></i></button>
                                 <button @click="shareLink('fb', p)" class="share-btn bg-fb"><i class="fa-brands fa-facebook-f"></i></button>
@@ -198,7 +205,9 @@
                 async loadData() {
                     try {
                         const r = await fetch(API);
-                        this.properties = await r.json();
+                        const rawData = await r.json();
+                        // MENGURUTKAN DARI YANG TERBARU (Baris terakhir di Sheet tampil paling atas)
+                        this.properties = rawData.reverse(); 
                         this.loading = false;
                     } catch (e) { console.error(e); this.loading = false; }
                 },
@@ -221,5 +230,4 @@
         }
     </script>
 </body>
-    </html>
-    
+</html>

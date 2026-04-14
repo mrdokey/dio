@@ -43,17 +43,20 @@
         .price-val { font-size: 18px; font-weight: 800; color: var(--primary); }
         .status-badge { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px; background: #dcfce7; color: #166534; }
 
-        /* BUTTONS */
+        /* --- DESAIN SHARE BUTTON FAVORIT --- */
         .btn-row { display: flex; gap: 8px; align-items: center; margin-top: auto; }
         .btn-wa-main { flex: 1; background: var(--accent); color: white; text-align: center; padding: 12px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 14px; }
         
         .share-group { display: flex; gap: 6px; }
-        .share-btn { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: 0.2s; }
-        .share-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .bg-wa { background: #25D366; color: white; }
-        .bg-fb { background: #1877F2; color: white; }
-        .bg-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; }
-        .share-btn svg { width: 20px; height: 20px; fill: currentColor; }
+        .share-btn { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: 0.2s; color: white; }
+        .share-btn:active { transform: scale(0.95); }
+        
+        /* Warna spesifik sesuai gambar */
+        .bg-wa { background: #25D366; }
+        .bg-fb { background: #1877F2; }
+        .bg-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        
+        .share-btn svg { width: 22px; height: 22px; fill: currentColor; }
 
         /* MODALS */
         .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 300; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
@@ -83,7 +86,7 @@
     </div>
 
     <main>
-        <div x-show="loading" style="text-align:center; padding:50px; color:#94a3b8;">Memuat data...</div>
+        <div x-show="loading" style="text-align:center; padding:50px; color:#94a3b8;">Memuat Data...</div>
         <div class="grid" x-show="!loading" x-cloak>
             <template x-for="p in filteredProperties" :key="p.rowId">
                 <div class="card" x-data="{ 
@@ -107,7 +110,7 @@
 
                         <div class="price-row">
                             <div>
-                                <div class="price-label">Harga</div>
+                                <div class="price-label">Harga Jual</div>
                                 <div class="price-val">Rp <span x-text="formatRupiah(p.Harga)"></span></div>
                             </div>
                             <span class="status-badge" x-text="p.Status"></span>
@@ -118,7 +121,7 @@
                             
                             <div class="share-group">
                                 <button @click="shareLink('wa', p)" class="share-btn bg-wa">
-                                    <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2..." /></svg>
+                                    <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.15l-.3-.17l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.16 0-.43.06-.66.31c-.22.25-.87.86-.87 2.07c0 1.22.89 2.39 1 2.56c.14.17 1.76 2.67 4.25 3.73c.59.27 1.05.42 1.41.53c.59.19 1.13.16 1.56.1c.48-.07 1.46-.6 1.67-1.18s.21-1.07.15-1.18c-.07-.1-.23-.16-.48-.27c-.25-.14-1.47-.74-1.69-.82c-.23-.08-.37-.12-.56.12c-.16.25-.64.81-.78.97c-.15.17-.29.19-.53.07c-.26-.13-1.06-.39-2.02-1.25c-.74-.66-1.24-1.47-1.39-1.72c-.14-.24-.01-.37.11-.49c.11-.11.26-.29.37-.43c.1-.14.14-.24.21-.4c.06-.16.03-.3-.01-.42c-.03-.15-.45-1.09-.61-1.47c-.16-.37-.36-.31-.52-.31Z" /></svg>
                                 </button>
                                 <button @click="shareLink('fb', p)" class="share-btn bg-fb">
                                     <svg viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10.02c0 5 3.66 9.15 8.44 9.9v-7h-2.54v-2.9h2.54V9.82c0-2.5 1.49-3.89 3.77-3.89c1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02Z"/></svg>
@@ -149,8 +152,8 @@
                 <span class="status-badge" x-text="sel.Status"></span>
             </div>
 
-            <div class="btn-row">
-                <a :href="'https://wa.me/6282229352255?text=Halo, saya tertarik dengan ' + sel.Nama_Properti" class="btn-wa-main">Chat via WhatsApp</a>
+            <div class="btn-row" style="margin-top:20px;">
+                <a :href="'https://wa.me/6282229352255?text=Halo, saya tertarik dengan ' + sel.Nama_Properti" class="btn-wa-main">Tanya Via WhatsApp</a>
                 <div class="share-group">
                     <button @click="shareLink('wa', sel)" class="share-btn bg-wa"><svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2..." /></svg></button>
                     <button @click="shareLink('fb', sel)" class="share-btn bg-fb"><svg viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10.02c0 5 3.66 9.15 8.44 9.9v-7h-2.54v-2.9h2.54V9.82c0-2.5 1.49-3.89 3.77-3.89c1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02Z"/></svg></button>
@@ -170,7 +173,7 @@
 
     <footer>
         <div style="color:white; font-weight:bold; margin-bottom:10px;">BURSA PROPERTI BALI</div>
-        <div style="font-size:12px;">Portal Jual Beli Rumah dan Tanah Terlengkap di Bali.</div>
+        <div style="font-size:12px;">Pusat informasi properti terlengkap dan terpercaya di Bali.</div>
         <div style="margin-top:20px; font-size:10px; color:#64748b;">© 2026 BURSA PROPERTI BALI. POWERED BY MRD DIGITAL SOLUTION.</div>
     </footer>
 
@@ -202,8 +205,8 @@
                 openDetail(p) { this.sel = p; this.detailOpen = true; },
                 shareLink(plat, p) {
                     const url = window.location.href;
-                    const txt = `Cek properti ini: ${p.Nama_Properti} ${url}`;
-                    if(plat === 'wa') window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`);
+                    const txt = `Cek properti ini: ${p.Nama_Properti} di Bursa Properti Bali.`;
+                    if(plat === 'wa') window.open(`https://wa.me/?text=${encodeURIComponent(txt + ' ' + url)}`);
                     if(plat === 'fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`);
                     if(plat === 'ig') { alert('Salin link ini untuk share ke Instagram: ' + url); }
                 }
@@ -211,5 +214,4 @@
         }
     </script>
 </body>
-    </html>
-            
+</html>

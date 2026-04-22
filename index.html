@@ -20,6 +20,9 @@
 
         .float-wa { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 200; text-decoration: none; }
 
+        /* Style untuk Header Banner */
+        .header-banner { width: 100%; max-height: 250px; object-fit: cover; display: block; margin: 0 auto; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
         .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px 20px; max-width: 500px; margin: auto; }
         .filter-btn { padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; background: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; text-align: center; }
         .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(30, 64, 175, 0.2); }
@@ -87,6 +90,8 @@
         <div class="logo-text">BURSA PROPERTI BALI</div>
         <a href="admin.html" class="admin-link">Admin Area</a>
     </nav>
+
+    <img src="https://i.ibb.co.com/LzGqjjsW/IMG-20260422-WA0002.jpg" alt="Banner Bursa Properti Bali" class="header-banner">
 
     <div class="filter-grid">
         <button @click="selectedCategory = 'Semua'" :class="selectedCategory === 'Semua' ? 'active' : ''" class="filter-btn btn-semua">Semua Properti</button>
